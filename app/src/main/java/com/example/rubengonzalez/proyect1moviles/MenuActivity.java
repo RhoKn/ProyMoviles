@@ -13,8 +13,6 @@ public class MenuActivity extends AppCompatActivity {
     private CardView secondCard;
     private CardView thirdCard;
     private CardView forthCard;
-    private CardView fifthCard;
-    private CardView sixthCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +26,6 @@ public class MenuActivity extends AppCompatActivity {
         secondCard = (CardView)findViewById(R.id.secondCard);
         thirdCard = (CardView)findViewById(R.id.thirdCard);
         forthCard = (CardView)findViewById(R.id.forthCard);
-        fifthCard = (CardView)findViewById(R.id.fifthCard);
-        sixthCard = (CardView)findViewById(R.id.sixthCard);
         firstCard.setOnClickListener(v -> {startClassActivity(v);});
         secondCard.setOnClickListener(v -> {startGroupActivity(v);});
         thirdCard.setOnClickListener(v -> {startAlumnActivity(v);});

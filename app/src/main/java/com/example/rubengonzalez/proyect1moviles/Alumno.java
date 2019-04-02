@@ -16,6 +16,11 @@ public class Alumno {
         group = _group;
     }
 
+    @Override
+    public String toString() {
+        return ""+ name + " " +lastName + " --- " + grade + "";
+    }
+
     public int getId() {
         return id;
     }
