@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Proyect1moviles</string>
+    <string name="title_activity_class">ClassActivity</string>
+    <string name="title_activity_alumn">AlumnActivity</string>
+    <string name="title_activity_group">GroupActivity</string>
+    <string name="title_activity_filures">FiluresActivity</string>
+</resources>
