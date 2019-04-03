@@ -20,6 +20,9 @@ public class FiluresActivity extends AppCompatActivity {
 
     //Lista de comentarios y comentario actual
     private ArrayList<AlumnosMaterias> lista;
+    private ArrayList<Alumno> alumns;
+    private ArrayList<Class> classes;
+    private ArrayList<String> ToShow;
     private AlumnosMaterias cl;
 
     //Controlador de bases de datos
@@ -38,9 +41,28 @@ public class FiluresActivity extends AppCompatActivity {
         init();
     }
     public void init(){
-        lista = db.getalClass();
-        System.out.println(lista);
-        spinnerAdapter=new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,lista);
+        lista = db.getFailedCAl();
+
+        alumns = db.getAlumns();
+        classes = db.getClasses();
+        ToShow = new ArrayList<>();
+        for (int i = 0; i < lista.size(); i++){
+            String x = "";
+            for (int j = 0; j < classes.size(); j++){
+                if(classes.get(j).getId() == lista.get(i).getIdClass()){
+                    x = x + classes.get(j).getName();
+                }
+            }
+            for (int k = 0; k < classes.size(); k++){
+                if(alumns.get(k).getId() == lista.get(i).getIdClass()){
+                    x = x + "   " + alumns.get(k).getName();
+                }
+            }
+            x = x + "   " + lista.get(i).getFaltas();
+            ToShow.add(x);
+        }
+        System.out.println(ToShow);
+        spinnerAdapter=new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,ToShow);
         listAlsCls.setAdapter(spinnerAdapter);
     }
 }

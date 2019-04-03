@@ -40,7 +40,9 @@
         <activity android:name=".NAlumnActivity" />
         <activity android:name=".NClassActivity" />
         <activity android:name=".NGroupActivity" />
-        <activity android:name=".AddClassesActivity"></activity>
+        <activity android:name=".AddClassesActivity" />
+        <activity android:name=".AssistanceActivity" />
+        <activity android:name=".AssistanceAlumnsActivity"></activity>
     </application>
 
 </manifest>

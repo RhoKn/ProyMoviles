@@ -153,6 +153,25 @@ public class MyOpenHelper extends SQLiteOpenHelper {
     }
 
     //------------alClass
+    public void getTheTableAC(int idAlumn, int idClass){
+
+        Cursor c = db.rawQuery("select * from alclass where idAlumn = ? AND idClass = ?", new String[]{Integer.toString(idAlumn),Integer.toString(idClass)});
+        int idRegister = 0;
+        int faltas=0;
+        if (c != null && c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                faltas = c.getInt(c.getColumnIndex("faltas"));
+                idRegister=c.getInt(c.getColumnIndex("_id"));
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        ContentValues cv = new ContentValues();
+        cv.put("faltas",Integer.toString(faltas+1));
+        db.update("alclass", cv, "_id=?", new String[] { Integer.toString(idRegister) });
+    }
+
     public void insertaralClass(int idAlumn, int idClass, int faltasPermitidad, int faltas){
         ContentValues cv = new ContentValues();
         cv.put("idAlumn", idAlumn);
@@ -181,6 +200,29 @@ public class MyOpenHelper extends SQLiteOpenHelper {
                 AlumnosMaterias al =new AlumnosMaterias(id,idAlumn,idClass, faltasPermitidad, faltas);
 
                 lista.add(al);
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return lista;
+    }
+
+    public ArrayList<AlumnosMaterias> getFailedCAl(){
+        ArrayList<AlumnosMaterias> lista=new ArrayList<AlumnosMaterias>();
+        Cursor c = db.rawQuery("select * from alclass", null);
+        if (c != null && c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                int idAlumn = c.getInt(c.getColumnIndex("idAlumn"));
+                int idClass = c.getInt(c.getColumnIndex("idClass"));
+                int faltasPermitidad = c.getInt(c.getColumnIndex("faltasPermitidad"));
+                int faltas = c.getInt(c.getColumnIndex("faltas"));
+                int id=c.getInt(c.getColumnIndex("_id"));
+                AlumnosMaterias al =new AlumnosMaterias(id,idAlumn,idClass, faltasPermitidad, faltas);
+
+                if(faltas >= faltasPermitidad){
+                    lista.add(al);
+                }
             } while (c.moveToNext());
         }
 
@@ -225,5 +267,45 @@ public class MyOpenHelper extends SQLiteOpenHelper {
             d.close();
         }
         return listaC;
+    }
+
+    public ArrayList<Alumno> getAlumnsOnTheClass(String idCl){
+        ArrayList<AlumnosMaterias> lista=new ArrayList<AlumnosMaterias>();
+        Cursor c = db.rawQuery("select * from alclass where idClass = ?",new String[]{idCl});
+        if (c != null && c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                int idAlumn = c.getInt(c.getColumnIndex("idAlumn"));
+                int idClass = c.getInt(c.getColumnIndex("idClass"));
+                int faltasPermitidad = c.getInt(c.getColumnIndex("faltasPermitidad"));
+                int faltas = c.getInt(c.getColumnIndex("faltas"));
+                int id=c.getInt(c.getColumnIndex("_id"));
+                AlumnosMaterias al =new AlumnosMaterias(id,idAlumn,idClass, faltasPermitidad, faltas);
+
+                lista.add(al);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        ArrayList<Alumno> listaAlumns=new ArrayList<Alumno>();
+        for(int i = 0; i < lista.size(); i++){
+            Cursor d = db.rawQuery("select * from alumns where _id = ?", new String[]{Integer.toString(lista.get(i).getIdAlumn())});
+            if (d != null && d.getCount()>0) {
+                d.moveToFirst();
+                do {
+                    String name = d.getString(d.getColumnIndex("name"));
+                    String lastName = d.getString(d.getColumnIndex("lastName"));
+                    Integer grade = d.getInt(d.getColumnIndex("grade"));
+                    String aGroup = d.getString(d.getColumnIndex("aGroup"));
+                    int id=d.getInt(d.getColumnIndex("_id"));
+                    Alumno al =new Alumno(id,name,lastName, grade, aGroup);
+                    listaAlumns.add(al);
+                } while (d.moveToNext());
+            }
+
+            d.close();
+        }
+
+        return listaAlumns;
     }
 }

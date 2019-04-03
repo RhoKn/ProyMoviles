@@ -9,7 +9,7 @@ public class AlumnosMaterias {
 
     @Override
     public String toString() {
-        return " " + idAlumn + " " + idClass;
+        return " " + idAlumn + " " + idClass + " " + faltasPermitidad + " " + faltas;
     }
 
     public AlumnosMaterias(int id, int idAlumn, int idClass, int faltasPermitidad, int faltas) {
